@@ -1,0 +1,32 @@
+Install
+  minikube
+    1.	choco install minikube, kubectl
+    2.	update hyperV  (https://github.com/kubernetes/minikube/issues/1793 )
+    3.	minikube start --vm-driver hyperv --hyperv-virtual-switch "Primary Virtual Switch"
+  EKS
+    1.	login with mfa through command line 
+      aws sts get-session-token --serial-number arn:aws:iam::XXX:mfa/XXX --token-code XXX (https://aws.amazon.com/premiumsupport/knowledge-center/authenticate-mfa-cli/ )
+    2.	download authenticator and kubeconfig (https://docs.aws.amazon.com/eks/latest/userguide/getting-started.html)
+
+Configure
+        set KUBECONFIG=C:\Users\XX\kubeconfig
+           kubectrl config get-contexts
+           kubectrl config set-context xxx
+	
+Deploy
+kubectl run <name> --image=<image-name>                             # Launch a pod called <name> using image <image-name>                                                              
+kubectl create -f <manifest.yaml>                                   # Create a service/deployment described in <manifest.yaml>
+kubectl apply -f <manifest.yaml>                                   # Create/update a service/deployment described in <manifest.yaml>
+kubectl scale --replicas=<count>  <name>                          # Scale  <name> to <count> instances
+kubectl expose <name> --port=<external> --target-port=<internal> # Map port <external> to port <internal> on replication 
+
+Investigate
+kubectl log podname containername
+kubectl exec -it podname bash
+kubectl get pods                         # List the current pods
+kubectl describe pod <name>              # Describe pod <name>
+kubectl get rc                           # List the replication controllers
+kubectl get rc --namespace="<namespace>" # List the replication controllers in <namespace>
+kubectl describe rc <name>               # Describe replication controller <name>
+kubectl get svc                          # List the services
+kubectl describe svc <name>              # Describe service <name>
